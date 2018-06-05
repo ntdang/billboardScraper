@@ -31,45 +31,16 @@ app.use(express.static("public"));
 // Connect to the Mongo DB
 mongoose.connect("mongodb://localhost/billboardDB");
 
-// // Make a request call to grab the HTML body from the site of your choice
-// request("http://www.billboard.com", function(error, response, html) {
-
-//   // Load the HTML into cheerio and save it to a variable
-//   // '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
-//   var $ = cheerio.load(html);
-
-//   // An empty array to save the data that we'll scrape
-//   var results = [];
-
-//   // Select each element in the HTML body from which you want information.
-//   // NOTE: Cheerio selectors function similarly to jQuery's selectors,
-//   // but be sure to visit the package's npm page to see how it works
-//   $("li.top-stories__title").each(function(i, element) {
-//     console.log(element);
-//     var link = $(element).children().attr("href");
-//     var title = $(element).children().children().text();
-
-//     // Save these results in an object that we'll push into the results array we defined earlier
-//     results.push({
-//       link: link,
-//       title: title
-//     });
-//   });
-
-//   // Log the results once you've looped through each of the elements found with cheerio
-//   console.log(results);
-// });
-
 // Routes
 
-// A GET route for scraping the echoJS website
+// A GET route for scraping the Billboard website
 app.get("/scrape", function (req, res) {
   // First, we grab the body of the html with request
   axios.get("http://www.billboard.com/").then(function (response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
-    // Now, we grab every h2 within an article tag, and do the following:
+    // Now, we grab every li within a class of top-stories__title, and do the following:
     $("li.top-stories__title").each(function (i, element) {
       // Save an empty result object
       var result = {};
@@ -97,6 +68,20 @@ app.get("/scrape", function (req, res) {
     // If we were able to successfully scrape and save an Article, send a message to the client
     res.send("Scrape Complete");
   });
+});
+
+// Route for getting all Articles from the db
+app.get("/articles", function(req, res) {
+  // Grab every document in the Articles collection
+  db.Article.find({})
+    .then(function(dbArticle) {
+      // If we were able to successfully find Articles, send them back to the client
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
 });
 
 
