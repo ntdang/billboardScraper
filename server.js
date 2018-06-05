@@ -31,6 +31,11 @@ app.use(express.static("public"));
 // Connect to the Mongo DB
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/billboardDB";
 
+//Set mongoose to leverage built in JS ES6 Promises
+//Connect to Mongo DB
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI);
+
 // Routes
 
 // A GET route for scraping the Billboard website
