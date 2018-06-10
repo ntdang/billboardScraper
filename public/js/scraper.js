@@ -1,10 +1,14 @@
 // Grab the articles as a json
-$.getJSON("/articles", function (data) {
-  // For each one
-  for (var i = 0; i < data.length; i++) {
-    // Display the apropos information on the page
-    $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
-  }
+$("#scrape-btn").on("click", function (event) {
+  event.preventDefault();
+  
+  $.getJSON("/articles", function (data) {
+    // For each one
+    for (var i = 0; i < data.length; i++) {
+      // Display the apropos information on the page
+      $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+    }
+  });
 });
 
 // Whenever someone clicks a p tag
@@ -78,7 +82,7 @@ $(document).on("click", "#deletenote", function () {
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
 
-//   // Run a POST request to change the note, using what's entered in the inputs
+  //   // Run a POST request to change the note, using what's entered in the inputs
   $.ajax({
       method: "DELETE",
       url: "/articles/" + thisId,
