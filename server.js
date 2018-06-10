@@ -12,13 +12,12 @@ var cheerio = require("cheerio");
 // Require all models
 var db = require("./models");
 
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 // Initialize Express
 var app = express();
 
 // Configure middleware
-
 // Use morgan logger for logging requests
 app.use(logger("dev"));
 // Use body-parser for handling form submissions
@@ -37,7 +36,6 @@ mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 
 // Routes
-
 // A GET route for scraping the Billboard website
 app.get("/scrape", function (req, res) {
   // First, we grab the body of the html with request
@@ -79,7 +77,7 @@ app.get("/scrape", function (req, res) {
 app.get("/articles", function(req, res) {
   // Grab every document in the Articles collection
   db.Article.find({})
-    .then(function(dbArticle) {
+    .then(function (dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
       res.json(dbArticle);
     })
