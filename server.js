@@ -92,8 +92,22 @@ app.get("/articles", function (req, res) {
     });
 });
 
+// Route for getting all saved articles
+app.get("/saved", function (req, res) {
+  // Grab every document in the Articles collection
+  db.Article.find({ saved: true })
+    .then(function (dbArticle) {
+      // If we were able to successfully find Articles, send them back to the client
+      res.json(dbArticle);
+    })
+    .catch(function (err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
 // Route for saving an article
-app.post("/articles/save/:id", function (req, res) {
+app.post("/articles/:id", function (req, res) {
   // Grab every document in the Articles collection
   db.Article.findOneAndUpdate({
     _id: req.params.id
@@ -111,7 +125,7 @@ app.post("/articles/save/:id", function (req, res) {
 });
 
 // Route for deleting a saved article
-app.post("/articles/save/:id", function (req, res) {
+app.post("/articles/:id", function (req, res) {
   // Grab every document in the Articles collection
   db.Article.findOneAndUpdate({
     _id: req.params.id
