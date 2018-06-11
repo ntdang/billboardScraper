@@ -35,6 +35,12 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/billboardDB";
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 
+//set up Handlebars
+// var exphbs = require("express-handlebars");
+
+// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+// app.set("view engine", "handlebars");
+
 // Routes
 // A GET route for scraping the Billboard website
 app.get("/scrape", function (req, res) {
@@ -69,6 +75,7 @@ app.get("/scrape", function (req, res) {
     // If we were able to successfully scrape and save an Article, send a message to the client
     res.send("Scrape Complete");
   });
+  // window.location = "/"
 });
 
 // Route for getting all Articles from the db
@@ -78,6 +85,42 @@ app.get("/articles", function (req, res) {
     .then(function (dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
       res.json(dbArticle);
+    })
+    .catch(function (err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+// Route for saving an article
+app.post("/articles/save/:id", function (req, res) {
+  // Grab every document in the Articles collection
+  db.Article.findOneAndUpdate({
+    _id: req.params.id
+  }, {
+    saved: true
+  })
+    .then(function (savedArticle) {
+      // If we were able to successfully find Articles, send them back to the client
+      res.json(savedArticle);
+    })
+    .catch(function (err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+// Route for deleting a saved article
+app.post("/articles/save/:id", function (req, res) {
+  // Grab every document in the Articles collection
+  db.Article.findOneAndUpdate({
+    _id: req.params.id
+  }, {
+    saved: false
+  })
+    .then(function (unsavedArticle) {
+      // If we were able to successfully find Articles, send them back to the client
+      res.json(unsavedArticle);
     })
     .catch(function (err) {
       // If an error occurred, send it to the client
