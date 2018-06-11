@@ -1,17 +1,27 @@
 //FIXME://when scrape btn is clicked, does not show right on the pg
 // Grab the articles as a json
-$("#scrape-btn").on("click", function (event) {
-  event.preventDefault();
+// $("#scrape-btn").on("click", function (event) {
+//   event.preventDefault();
 
-  $.getJSON("/articles", function (data) {
-    // For each one
-    for (var i = 0; i < data.length; i++) {
-      // Display the apropos information on the page
-      $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
-      $("#articles").append("<button data-id='" + data[i]._id + "' id='savearticle' class='btn-outline-primary btn-squared'>Save This Article</button>");
-    }
-  });
-  // window.location = "/"
+$.getJSON("/articles", function (data) {
+  // For each one
+  for (var i = 0; i < data.length; i++) {
+    // Display the apropos information on the page
+    $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+    $("#articles").append("<button data-id='" + data[i]._id + "' id='savearticle' class='btn-outline-primary btn-squared'>Save This Article</button>");
+  }
+});
+// window.location = "/"
+// });
+
+$(document).on("click", "#scrape-btn", function (event) {
+  event.preventDefault();
+  $.ajax({
+    method: "GET",
+    url: "/scrape"
+  }).done(function (data) {
+    location.reload();
+  })
 });
 
 // Whenever someone clicks a p tag
