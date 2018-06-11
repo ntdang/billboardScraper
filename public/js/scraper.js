@@ -1,4 +1,4 @@
-FIXME://when scrape btn is clicked, does not show right on the pg
+//FIXME://when scrape btn is clicked, does not show right on the pg
 // Grab the articles as a json
 $("#scrape-btn").on("click", function (event) {
   event.preventDefault();
@@ -51,7 +51,7 @@ $(document).on("click", "p", function () {
     });
 });
 
-TODO:
+//TODO:
 // When you click the savearticle button
 // $(document).on("click", "#savearticle", function (event) {
 //   event.preventDefault();
@@ -82,7 +82,7 @@ TODO:
 //   $("#bodyinput").val("");
 // });
 
-TODO:
+//TODO:
 // When you click on the delete a saved article button
 
 // When you click the savenote button
