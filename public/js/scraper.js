@@ -82,6 +82,9 @@ TODO:
 //   $("#bodyinput").val("");
 // });
 
+TODO:
+// When you click on the delete a saved article button
+
 // When you click the savenote button
 $(document).on("click", "#savenote", function (event) {
   event.preventDefault();
